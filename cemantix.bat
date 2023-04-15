@@ -1,0 +1,1 @@
+conda activate cemantix && python main.py && exit()

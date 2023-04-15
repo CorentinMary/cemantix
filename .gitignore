@@ -1,0 +1,5 @@
+*.log
+*.ipynb
+*.bin
+*.csv
+*.pyc

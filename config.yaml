@@ -1,0 +1,13 @@
+game_url: https://cemantix.certitudes.org/
+
+word2vec: "frWac_non_lem_no_postag_no_phrase_200_cbow_cut100.bin"
+
+agent_type: "gangster"
+
+agent_params: {
+  eps_breakpoint: [20, 0.1],
+  sigma_maxwords: 5,
+  start_list: []
+}
+
+max_iter: 1000
