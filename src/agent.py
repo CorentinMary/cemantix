@@ -32,11 +32,6 @@ class Agent:
         self.round_no = 0
         self.df_result = pd.DataFrame(columns=["word", "temp", "prog"])
 
-    def preprocess(self, word):
-        if word.endswith("s") and word[:-1] in self.model.index_to_key:
-            return word[:-1]
-        return word
-
     def pick_random_word(self) -> str:
         """Picks a random word in the model's vocabulary
         Returns:
@@ -46,7 +41,7 @@ class Agent:
         word = ""
         while word in self.picked_word_list or word in self.blacklist:
             n = np.random.randint(1, vocab_length)
-            word = self.preprocess(self.model.index_to_key[n])
+            word = self.model.index_to_key[n]
         return word
 
     def _eps(self, temp: float):
@@ -123,9 +118,9 @@ class CemantixBandit(Agent):
         sigma_bound = self._sigma(prog)
         sigma = np.random.randint(1, sigma_bound + 1)
         similar_words = [
-            self.preprocess(w[0])
+            w[0]
             for w in self.model.most_similar(list(self.df_result.word.values[:sigma]))
-            if self.preprocess(w[0]) not in self.picked_word_list
+            if w[0] not in self.picked_word_list
         ]
         if len(similar_words):
             word = similar_words[0]
@@ -213,9 +208,9 @@ class CemantixGangster(Agent):
         else:
             selected_words = list(self.df_result.word.values[:sigma])
         similar_words = [
-            self.preprocess(w[0])
+            w[0]
             for w in self.model.most_similar(selected_words)
-            if self.preprocess(w[0]) not in self.picked_word_list
+            if w[0] not in self.picked_word_list
         ]
         if len(similar_words):
             word = similar_words[0]
@@ -323,9 +318,9 @@ class CemantixPirate(Agent):
         else:
             selected_words = list(self.df_result.word.values[:sigma])
         similar_words = [
-            self.preprocess(w[0])
+            w[0]
             for w in self.model.most_similar(selected_words, topn=tau)
-            if self.preprocess(w[0]) not in self.picked_word_list
+            if w[0] not in self.picked_word_list
         ]
         if len(similar_words):
             word = similar_words[0]

@@ -9,7 +9,7 @@ agent_type: "pirate"
 agent_params:
   {
     eps_breakpoint: [50, 0.1],
-    sigma_maxwords: 5,
+    sigma_maxwords: 3,
     start_list: [],
     tau_final: 10,
   }
