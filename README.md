@@ -44,7 +44,7 @@ Run the following command lines to test it:
 conda create -n cemantix python=3.8 -y
 conda activate cemantix
 pip install -r requirements.txt
-python -m main.py
+python main.py
 ```
 
 ## Troubleshooting

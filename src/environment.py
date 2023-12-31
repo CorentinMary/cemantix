@@ -57,7 +57,7 @@ class CemantixScraper:
         Returns:
             dict: word,  temperature and progression scores obtained. -1 the word produces an error.
         """
-        time.sleep(3)
+        time.sleep(5)
         error_msg = self.driver.find_elements(by=By.ID, value="cemantix-error")
         assert len(error_msg) != 0, "Error message element not found."
 
