@@ -31,7 +31,13 @@ class CemantixScraper:
         """Launches the driver and starts the game."""
         self.driver = webdriver.Chrome(executable_path=self.executable_path)
         self.driver.get(self.game_url)
-        # closing the dialog box
+
+        # closing consent dialog box if it appears
+        consent_dialog_box = self.driver.find_elements(by=By.CLASS_NAME, value="fc-choice-dialog-header")
+        if len(consent_dialog_box):
+            consent_dialog_box[0].find_elements(By.TAG_NAME, "button")[0].click()
+        
+        # closing game dialog box
         close_dialog_button = self.driver.find_elements(by=By.ID, value="dialog-close")
         if len(close_dialog_button):
             close_dialog_button[0].click()
@@ -42,7 +48,7 @@ class CemantixScraper:
         Args:
             word (str): word to play.
         """
-        input_box = self.driver.find_elements(by=By.ID, value="cemantix-guess")
+        input_box = self.driver.find_elements(by=By.ID, value="guess")
         assert len(input_box) != 0, "Input box not found."
 
         input_box[0].send_keys(word)
@@ -58,14 +64,14 @@ class CemantixScraper:
             dict: word,  temperature and progression scores obtained. -1 the word produces an error.
         """
         time.sleep(5)
-        error_msg = self.driver.find_elements(by=By.ID, value="cemantix-error")
+        error_msg = self.driver.find_elements(by=By.ID, value="error")
         assert len(error_msg) != 0, "Error message element not found."
 
         if error_msg[0].text != "":
             logging.info("The word provided was not recognized by the game.")
             return -1
 
-        guessed = self.driver.find_elements(by=By.ID, value="cemantix-guessed")
+        guessed = self.driver.find_elements(by=By.ID, value="guessed")
         assert len(guessed) != 0, "Guessed not found."
         result = {
             "word": guessed[0].find_elements(by=By.XPATH, value="./td")[1].text,
